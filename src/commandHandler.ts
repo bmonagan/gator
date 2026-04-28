@@ -29,7 +29,7 @@ export async function handlerRegister(cmdName: string, ...args: string[]): Promi
     console.log(createdUser);
 }
 
-export async function handlerDeleteAllUsers(cmdName: string, ...args: string[]): Promise<void> {
-    
-
+export async function handlerReset(cmdName: string, ...args: string[]): Promise<void> {
+    await delUsers();
+    console.log("Users deleted successfully");
 }

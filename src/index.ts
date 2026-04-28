@@ -1,4 +1,4 @@
-import { CommandsRegistry } from "./com_reg";
+import { CommandsRegistry, runCommand } from "./com_reg";
 import { setUser,readConfig } from "./config";
 import { registerCommand } from "./com_reg";
 import { CommandHandler, handlerLogin } from "./commandHandler";
@@ -12,5 +12,6 @@ function main() {
   if (cmdName.length === 0) {
     throw new Error("Args must contain the cmdName at a minimum");
   }
+  runCommand(registry,cmdName[0],args.join(" "));
 }
 main();

@@ -33,16 +33,18 @@ function getConfigFilePath() {
 
 function validateConfig(rawConfig: any): Config { 
     if (rawConfig === null || typeof rawConfig !== "object") {
-        throw new Error("config is not an object");
-    }
+        throw new Error("config is not an object");}
     const dbUrl = rawConfig.db_url;
     const currentUserName = rawConfig.current_user_name;
     if (!dbUrl || typeof dbUrl !== 'string') { 
         throw new Error("db_url field not valid");
     }
-    if (currentUserName && typeof currentUserName !== 'string') {
-        throw new Error("currentUserName field not valid");
-    }
+    if (
+        currentUserName !== undefined &&
+        typeof currentUserName !== "string"
+        ) {
+    throw new Error("current_user_name field not valid");
+}
     const config: Config = {
         dbUrl: dbUrl,
         currentUserName: currentUserName

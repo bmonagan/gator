@@ -37,7 +37,7 @@ function validateConfig(rawConfig: any): Config {
         throw new Error("db_url field not valid");
     }
     if (!currentUserName || typeof currentUserName !== 'string') {
-        throw new Error("currentUserName");
+        throw new Error("currentUserName field not valid");
     }
     const config: Config = {
         dbUrl: dbUrl,

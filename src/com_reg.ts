@@ -10,6 +10,6 @@ export async function runCommand(registry: CommandsRegistry, cmdName: string, ..
         throw new Error("Command name must be in the registry.");
     }
     else {
-        registry[cmdName](cmdName, ...args)
+        await registry[cmdName](cmdName, ...args)
     }
 }

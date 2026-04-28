@@ -2,7 +2,7 @@ import { CommandsRegistry, runCommand } from "./com_reg";
 import { setUser,readConfig } from "./config";
 import { registerCommand } from "./com_reg";
 import { CommandHandler, handlerLogin } from "./commandHandler";
-function main() {
+async function main() {
   const registry: CommandsRegistry = {};
   const login: CommandHandler = handlerLogin;
   registerCommand(registry, "login", login);
@@ -12,6 +12,7 @@ function main() {
   if (!cmdName) {
     throw new Error("Args must contain the cmdName at a minimum");
   }
-  runCommand(registry, cmdName, ...args);
+  await runCommand(registry, cmdName, ...args);
+  process.exit(0);
 }
 main();

@@ -17,15 +17,12 @@ export async function handlerRegister(cmdName: string, ...args: string[]): Promi
         throw new Error("the register handler expects a single argument, the username");
     }
     const name = args[0];
-    if (typeof name !== 'string') {
-        throw new Error("Must include a name in the form of a string.");
-    }
-    if (getUser(name) !== undefined) {
+    if ((await getUser(name)) !== undefined) {
         throw new Error("Name already in database.");
     }
     const createdUser = await createUser(name);
     setUser(name);
     console.log(`User ${name} was created`);
-    console.log(createUser);
+    console.log(createdUser);
 
 }

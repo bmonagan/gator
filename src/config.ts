@@ -11,16 +11,17 @@ export type Config = {
 
 export function setUser(userName: string): void {
     const filePath = getConfigFilePath();
-    let cfgOBJ = fs.readFileSync(filePath,'utf-8');
-    let cfg = JSON.parse(cfgOBJ);
+    let cfg = readConfig();
     cfg.currentUserName = userName;
     fs.writeFileSync(filePath, JSON.stringify(cfg));
 }
-export function readConfig(): void { 
+export function readConfig(): Config { 
     const filePath = getConfigFilePath();
+    let cfgOBJ = JSON.parse(fs.readFileSync(filePath,'utf-8'));
+    const cfg = validateConfig(cfgOBJ);
+    return cfg;
 
 }
-
 
 function getConfigFilePath() {
     const homedir = os.homedir()
@@ -31,12 +32,15 @@ function getConfigFilePath() {
 }
 
 function validateConfig(rawConfig: any): Config { 
+    if (rawConfig === null || typeof rawConfig !== "object") {
+        throw new Error("config is not an object");
+    }
     const dbUrl = rawConfig.db_url;
     const currentUserName = rawConfig.current_user_name;
     if (!dbUrl || typeof dbUrl !== 'string') { 
         throw new Error("db_url field not valid");
     }
-    if (!currentUserName || typeof currentUserName !== 'string') {
+    if (currentUserName && typeof currentUserName !== 'string') {
         throw new Error("currentUserName field not valid");
     }
     const config: Config = {

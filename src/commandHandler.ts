@@ -1,6 +1,6 @@
 import { setUser } from "./config";
 
-type CommandHandler = (cmdName: string, ...args: string[]) => void;
+export type CommandHandler = (cmdName: string, ...args: string[]) => void;
 
 function handlerLOgin(cmdName: string, ...args: string[]): void {
     if (args.length === 0){

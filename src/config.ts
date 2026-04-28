@@ -25,7 +25,7 @@ export function readConfig(): Config {
 
 function getConfigFilePath() {
     const homedir = os.homedir()
-    const config = "/.gatorconfig.json"
+    const config = ".gatorconfig.json"
     const file_path = path.join(homedir,config);
     return file_path;
 

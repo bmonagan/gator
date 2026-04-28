@@ -1,8 +1,8 @@
 import { setUser } from "./config";
 
-export type CommandHandler = (cmdName: string, ...args: string[]) => void;
+export type CommandHandler = (cmdName: string, ...args: string[]) => Promise<void>;
 
-export function handlerLogin(cmdName: string, ...args: string[]): void {
+export async function handlerLogin(cmdName: string, ...args: string[]): Promise<void> {
     if (args.length === 0){
         throw new Error("the login handler expects a single argument, the username");
     }

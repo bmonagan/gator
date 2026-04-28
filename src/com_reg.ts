@@ -5,7 +5,7 @@ export function registerCommand(registry: CommandsRegistry, cmdName: string, han
 	registry[cmdName] = handler;
 }
 
-export function runCommand(registry: CommandsRegistry, cmdName: string, ...args: string[]) {
+export async function runCommand(registry: CommandsRegistry, cmdName: string, ...args: string[]) {
     if (!Object.hasOwn(registry,cmdName)){
         throw new Error("Command name must be in the registry.");
     }

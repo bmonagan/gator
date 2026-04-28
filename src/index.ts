@@ -7,11 +7,11 @@ function main() {
   const login: CommandHandler = handlerLogin;
   registerCommand(registry, "login", login);
   let Fullargs:string[] = process.argv;
-  let cmdName = Fullargs.slice(0,1);
+  let cmdName = Fullargs[0];
   let args = Fullargs.slice(1);
-  if (cmdName.length === 0) {
+  if (!cmdName) {
     throw new Error("Args must contain the cmdName at a minimum");
   }
-  runCommand(registry,cmdName[0],args.join(" "));
+  runCommand(registry, cmdName, ...args);
 }
 main();

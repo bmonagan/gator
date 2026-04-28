@@ -6,7 +6,7 @@ import { config } from "process";
 
 export type Config = { 
     dbUrl: string,
-    currentUserName: string
+    currentUserName: string | undefined
 }
 
 export function setUser(userName: string): void {

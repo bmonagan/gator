@@ -13,14 +13,9 @@ export function setUser(userName: string): void {
     let cfgOBJ = fs.readFileSync(filePath,'utf-8');
     let cfg = JSON.parse(cfgOBJ);
     cfg.currentUserName = userName;
-    writeConfig(cfg);
+    fs.writeFileSync(filePath, JSON.stringify(cfg));
 }
 
-function writeConfig(cfg: Config): void {
-
-
-
-}
 
 function getConfigFilePath() {
     const homedir = os.homedir()

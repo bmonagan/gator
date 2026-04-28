@@ -8,6 +8,9 @@ export async function handlerLogin(cmdName: string, ...args: string[]): Promise<
         throw new Error("the login handler expects a single argument, the username");
     }
     let username = args[0];
+    if ((await getUser(username)) === undefined) {
+        throw new Error("Username does not exist in database.");
+    }
     setUser(username);
     console.log("User name has been set.");
 }

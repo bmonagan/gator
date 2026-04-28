@@ -2,6 +2,7 @@
 import fs, { write } from "fs";
 import os from "os";
 import path from "path";
+import { config } from "process";
 
 export type Config = { 
     dbUrl: string,
@@ -15,6 +16,10 @@ export function setUser(userName: string): void {
     cfg.currentUserName = userName;
     fs.writeFileSync(filePath, JSON.stringify(cfg));
 }
+export function readConfig(): void { 
+    const filePath = getConfigFilePath();
+
+}
 
 
 function getConfigFilePath() {
@@ -23,4 +28,20 @@ function getConfigFilePath() {
     const file_path = path.join(homedir,config);
     return file_path;
 
+}
+
+function validateConfig(rawConfig: any): Config { 
+    const dbUrl = rawConfig.db_url;
+    const currentUserName = rawConfig.current_user_name;
+    if (!dbUrl || typeof dbUrl !== 'string') { 
+        throw new Error("db_url field not valid");
+    }
+    if (!currentUserName || typeof currentUserName !== 'string') {
+        throw new Error("currentUserName");
+    }
+    const config: Config = {
+        dbUrl: dbUrl,
+        currentUserName: currentUserName
+    };
+    return config;
 }

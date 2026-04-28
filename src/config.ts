@@ -13,7 +13,8 @@ export function setUser(userName: string): void {
     const filePath = getConfigFilePath();
     let cfg = readConfig();
     cfg.currentUserName = userName;
-    fs.writeFileSync(filePath, JSON.stringify(cfg));
+    writeConfig(cfg,filePath);
+    
 }
 export function readConfig(): Config { 
     const filePath = getConfigFilePath();
@@ -29,6 +30,13 @@ function getConfigFilePath() {
     const file_path = path.join(homedir,config);
     return file_path;
 
+}
+
+function writeConfig(config:Config,filePath:string): void {
+    let jConfig = { "db_url": config.dbUrl,
+        "current_user_name": config.currentUserName
+    }
+    fs.writeFileSync(filePath, JSON.stringify(jConfig));
 }
 
 function validateConfig(rawConfig: any): Config { 

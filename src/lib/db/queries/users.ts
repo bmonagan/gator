@@ -15,3 +15,8 @@ export async function getUser(name:string) {
 export async function delUsers(): Promise<void> {
   await db.execute(sql`TRUNCATE TABLE ${users}`);
 }
+
+export async function listUsers() {
+  const result = await db.select({ name: users.name }).from(users);
+  return result;
+}

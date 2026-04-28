@@ -36,6 +36,7 @@ function validateConfig(rawConfig: any): Config {
         throw new Error("config is not an object");
     }
     const dbUrl = rawConfig.db_url;
+    console.log(dbUrl);
     const currentUserName = rawConfig.current_user_name;
     if (!dbUrl || typeof dbUrl !== 'string') { 
         throw new Error("db_url field not valid");

@@ -1,2 +1,6 @@
 import { CommandHandler } from "./commandHandler";
-type CommandsRegistry = {commandname: string, comamnd: CommandHandler};
+export type CommandsRegistry = Record<string, CommandHandler>;
+
+function registerCommand(registry: CommandsRegistry, cmdName: string, handler: CommandHandler) {
+	registry[cmdName] = handler;
+}

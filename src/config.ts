@@ -1,5 +1,5 @@
 /// <reference types="node" />
-import fs from "fs";
+import fs, { write } from "fs";
 import os from "os";
 import path from "path";
 
@@ -8,15 +8,16 @@ export type Config = {
     currentUserName: string
 }
 
-export function setUser(cfg: Config, userName: string): void {\
-    const path = getConfigFilePath();
-    const cfg = fs.readFileSync(path,'utf-8');
-
-
+export function setUser(userName: string): void {
+    const filePath = getConfigFilePath();
+    let cfgOBJ = fs.readFileSync(filePath,'utf-8');
+    let cfg = JSON.parse(cfgOBJ);
+    cfg.currentUserName = userName;
+    writeConfig(cfg);
 }
 
 function writeConfig(cfg: Config): void {
-    
+
 
 
 }

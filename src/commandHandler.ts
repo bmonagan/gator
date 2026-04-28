@@ -1,5 +1,5 @@
 import { setUser } from "./config";
-import { createUser,getUser } from "./lib/db/queries/users";
+import { createUser,getUser,delUsers } from "./lib/db/queries/users";
 
 export type CommandHandler = (cmdName: string, ...args: string[]) => Promise<void>;
 
@@ -27,5 +27,9 @@ export async function handlerRegister(cmdName: string, ...args: string[]): Promi
     setUser(name);
     console.log(`User ${name} was created`);
     console.log(createdUser);
+}
+
+export async function handlerDeleteAllUsers(cmdName: string, ...args: string[]): Promise<void> {
+    
 
 }

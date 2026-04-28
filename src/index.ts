@@ -7,8 +7,8 @@ function main() {
   const login: CommandHandler = handlerLogin;
   registerCommand(registry, "login", login);
   let Fullargs:string[] = process.argv;
-  let cmdName = Fullargs[0];
-  let args = Fullargs.slice(1);
+  let cmdName = Fullargs[2];
+  let args = Fullargs.slice(3);
   if (!cmdName) {
     throw new Error("Args must contain the cmdName at a minimum");
   }

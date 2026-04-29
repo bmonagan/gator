@@ -18,6 +18,21 @@ async function fetchFeed(feedURL: string): Promise<RSSFeed> {
 		throw new Error("Channel is required");
 	}
 	const channel = feed.channel;
+	if (!channel.title) {
+		throw new Error("Channel title is required");
+	}
+	if (!channel.link) {
+		throw new Error("Channel link is required");
+	}
+	if (!channel.description) {
+		throw new Error("Channel description is required");
+	}
+
+	const title = channel.title;
+	const link = channel.link;
+	const description = channel.description;
+
+	
 }
 
 type RSSFeed = {

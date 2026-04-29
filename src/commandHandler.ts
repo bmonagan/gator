@@ -56,7 +56,7 @@ export async function handlerAggregate(cmdName: string, ...args: string[]): Prom
     // const feedURL = args[0];
     const feedURL = "https://www.wagslane.dev/index.xml";
     const RSSFeed = await fetchFeed(feedURL);
-    console.log(RSSFeed);
+    console.log(JSON.stringify(RSSFeed, null, 2));
 
 
 }

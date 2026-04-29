@@ -2,7 +2,7 @@ import { setUser,readConfig } from "./config";
 import { createUser,getUser,delUsers,listUsers } from "./lib/db/queries/users";
 import { createFeed } from "./lib/db/queries/feeds";
 import {fetchFeed} from "./feed";
-import {printFeed} 
+import { printFeed } from "./printFeed";
 
 
 export type CommandHandler = (cmdName: string, ...args: string[]) => Promise<void>;

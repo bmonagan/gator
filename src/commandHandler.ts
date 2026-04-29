@@ -49,10 +49,12 @@ export async function handlerUsers(cmdName: string, ...args: string[]): Promise<
 }
 
 export async function handlerAggregate(cmdName: string, ...args: string[]): Promise<void> {
-    if (!args[0] || typeof(args[0]) !== 'string' ) {
-        throw new Error("Must include a url as an argument");
-    }
-    const feedURL = args[0];
+    // PLACEHOLDER 
+    // if (!args[0] || typeof(args[0]) !== 'string' ) {
+    //     throw new Error("Must include a url as an argument");
+    // }
+    // const feedURL = args[0];
+    const feedURL = "https://www.wagslane.dev/index.xml";
     const RSSFeed = await fetchFeed(feedURL);
     console.log(RSSFeed);
 

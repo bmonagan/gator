@@ -27,10 +27,13 @@ async function fetchFeed(feedURL: string): Promise<RSSFeed> {
 	if (!channel.description) {
 		throw new Error("Channel description is required");
 	}
-
+	if (!channel.item) {
+		throw new Error("Channel items are required");
+	}
 	const title = channel.title;
 	const link = channel.link;
 	const description = channel.description;
+	const item: RSSItem[] = Array.isArray(channel.item) ? channel.item : [channel.item];
 
 	
 }

@@ -57,6 +57,16 @@ export async function handlerAggregate(cmdName: string, ...args: string[]): Prom
     const feedURL = "https://www.wagslane.dev/index.xml";
     const RSSFeed = await fetchFeed(feedURL);
     console.log(JSON.stringify(RSSFeed, null, 2));
+}
 
+export async function handlerAddFeed(cmdName: string, ...args: string[]): Promise<void> {
+    if (!args[0] || typeof(args[0] !== 'string')){
+        throw new Error("Must include the name of the feed as an argument");
+    }
+    if (!args[1] || typeof(args[1] !== 'string')) {
+        throw new Error("Must include url of the feed as an argument");
+    }
+    const name = args[0];
+    const url = args[1];
 
 }

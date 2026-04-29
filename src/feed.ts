@@ -1,8 +1,22 @@
 const { XMLParser, XMLBuilder, XMLValidator} = require("fast-xml-parser");
+const USER_AGENT = "Gator/1.0 (+https://github.com/bmonagan/gator; RSS Feed Aggregator)";
 
-function fetchFeed(feedURL: string): RSSFeed { 
+async function fetchFeed(feedURL: string): Promise<RSSFeed> {
+  const response = await fetch(feedURL, {
+    headers: {
+      "User-Agent": USER_AGENT,
+    },
+  });
 
+  if (!response.ok) {
+    throw new Error(`Failed to fetch feed: ${response.status} ${response.statusText}`);
+  }
 
+  const xmlText = await response.text();
+  const parser = new XMLParser();
+  const feed = parser.parse(xmlText);
+  
+  
 }
 
 type RSSFeed = {

@@ -14,10 +14,10 @@ export async function fetchFeed(feedURL: string): Promise<RSSFeed> {
 	const xmlText = await response.text();
 	const parser = new XMLParser();
 	const feed = parser.parse(xmlText);
-	if (!feed.channel) {
+	if (!feed.rss.channel) {
 		throw new Error("Channel is required");
 	}
-	const channel = feed.channel;
+	const channel = feed.rss.channel;
 	if (!channel.title) {
 		throw new Error("Channel title is required");
 	}

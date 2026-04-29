@@ -1,6 +1,6 @@
 import { db } from "..";
 import { eq, sql } from "drizzle-orm";
-import { users } from "../schema";
+import { users, feeds } from "../schema";
 
 export async function createUser(name: string) {
   const [result] = await db.insert(users).values({ name: name }).returning();
@@ -13,6 +13,7 @@ export async function getUser(name:string) {
 }
 
 export async function delUsers(): Promise<void> {
+  await db.execute(sql`TRUNCATE TABLE ${feeds}`);
   await db.execute(sql`TRUNCATE TABLE ${users}`);
 }
 

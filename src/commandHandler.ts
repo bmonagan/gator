@@ -1,5 +1,7 @@
 import { setUser,readConfig } from "./config";
 import { createUser,getUser,delUsers,listUsers } from "./lib/db/queries/users";
+import {fetchFeed} from "./feed";
+
 
 export type CommandHandler = (cmdName: string, ...args: string[]) => Promise<void>;
 
@@ -44,4 +46,15 @@ export async function handlerUsers(cmdName: string, ...args: string[]): Promise<
         }
         console.log(expr);
     }
+}
+
+export async function handlerAggregate(cmdName: string, ...args: string[]): Promise<void> {
+    if (!args[0] || typeof(args[0]) !== 'string' ) {
+        throw new Error("Must include a url as an argument");
+    }
+    const feedURL = args[0];
+    const RSSFeed = await fetchFeed(feedURL);
+    console.log(RSSFeed);
+
+
 }

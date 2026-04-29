@@ -60,10 +60,10 @@ export async function handlerAggregate(cmdName: string, ...args: string[]): Prom
 }
 
 export async function handlerAddFeed(cmdName: string, ...args: string[]): Promise<void> {
-    if (!args[0] || typeof(args[0] !== 'string')){
+    if (!args[0] || typeof args[0] !== 'string') {
         throw new Error("Must include the name of the feed as an argument");
     }
-    if (!args[1] || typeof(args[1] !== 'string')) {
+    if (!args[1] || typeof args[1] !== 'string') {
         throw new Error("Must include url of the feed as an argument");
     }
     const name = args[0];

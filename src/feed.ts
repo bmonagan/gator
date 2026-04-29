@@ -33,7 +33,15 @@ async function fetchFeed(feedURL: string): Promise<RSSFeed> {
 	const title = channel.title;
 	const link = channel.link;
 	const description = channel.description;
-	const item: RSSItem[] = Array.isArray(channel.item) ? channel.item : [channel.item];
+	const item: RSSItem[] = (Array.isArray(channel.item) ? channel.item : [channel.item])
+		.filter((i: unknown) =>
+			i !== null &&
+			typeof i === "object" &&
+			typeof (i as RSSItem).title === "string" &&
+			typeof (i as RSSItem).link === "string" &&
+			typeof (i as RSSItem).description === "string" &&
+			typeof (i as RSSItem).pubDate === "string"
+		);
 
 	return {
 		channel: {

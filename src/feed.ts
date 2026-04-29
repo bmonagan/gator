@@ -35,7 +35,14 @@ async function fetchFeed(feedURL: string): Promise<RSSFeed> {
 	const description = channel.description;
 	const item: RSSItem[] = Array.isArray(channel.item) ? channel.item : [channel.item];
 
-	
+	return {
+		channel: {
+			title,
+			link,
+			description,
+			item,
+		},
+	};
 }
 
 type RSSFeed = {

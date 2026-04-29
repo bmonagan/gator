@@ -1,6 +1,8 @@
 import { setUser,readConfig } from "./config";
 import { createUser,getUser,delUsers,listUsers } from "./lib/db/queries/users";
+import { createFeed } from "./lib/db/queries/feeds";
 import {fetchFeed} from "./feed";
+import {printFeed} 
 
 
 export type CommandHandler = (cmdName: string, ...args: string[]) => Promise<void>;
@@ -68,5 +70,14 @@ export async function handlerAddFeed(cmdName: string, ...args: string[]): Promis
     }
     const name = args[0];
     const url = args[1];
-
+    const current_user = readConfig().currentUserName;
+    if (!current_user) {
+        throw new Error("No user logged in.");
+    }
+    const user = await getUser(current_user);
+    if (!user) {
+        throw new Error("No logged-in user found.");
+    }
+    const feed = await createFeed(name, url, user.id);
+    printFeed(feed,user);
 }

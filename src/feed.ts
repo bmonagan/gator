@@ -1,7 +1,7 @@
 const { XMLParser, XMLBuilder, XMLValidator} = require("fast-xml-parser");
 const USER_AGENT = "Gator/1.0 (+https://github.com/bmonagan/gator; RSS Feed Aggregator)";
 
-async function fetchFeed(feedURL: string): Promise<RSSFeed> {
+export async function fetchFeed(feedURL: string): Promise<RSSFeed> {
 	const response = await fetch(feedURL, {
 		headers: {
 			"User-Agent": USER_AGENT,

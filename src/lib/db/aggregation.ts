@@ -9,7 +9,7 @@ export async function scrapeFeeds() {
         try {
             const feedData = await fetchFeed(feedToFetch.url);
             for (const item of feedData.channel.item) {
-                createPost(
+                await createPost(
                     item.title,
                     item.link,
                     item.description,

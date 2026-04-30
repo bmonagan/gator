@@ -132,9 +132,12 @@ export async function handlerUnfollow(cmdName: string, user: User, ...args: stri
 }
 
 export async function handlerBrowse(cmdName: string, user: User, ...args: string[]): Promise<void> {
-    let limit = 2;
-    if (args.length > 0 && typeof args[0] === 'number') {
-        limit = args[0];
+    let limit = 10;
+    if (args.length > 0) {
+        const parsed = parseInt(args[0], 10);
+        if (!isNaN(parsed) && parsed > 0) {
+            limit = parsed;
+        }
     }
     const posts = await getPostsForUser(user.id, limit);
     for (const post of posts) {

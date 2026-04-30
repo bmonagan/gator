@@ -12,6 +12,7 @@ import {
     UserCommandHandler,
 } from "./commandHandler";
 import { readConfig } from "./config";
+import { getUser } from "./lib/db/queries/users";
 export type CommandsRegistry = Record<string, CommandHandler>;
 type middlewareLoggedIn = (handler: UserCommandHandler) => CommandHandler;
 
@@ -21,8 +22,12 @@ const middlewareLoggedIn: middlewareLoggedIn = (handler) => {
         if (!currentUser) {
             throw new Error("You must be logged in to run this command.");
         }
+        const user_obj = await getUser(currentUser);
+        if (!user_obj) {
+            throw new Error("No logged-in user found.");
+        }
 
-        await handler(cmdName, ...args);
+        await handler(cmdName, user_obj, ...args);
     };
 };
 

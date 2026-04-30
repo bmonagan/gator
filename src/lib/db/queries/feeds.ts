@@ -20,3 +20,11 @@ export async function listAllFeeds() {
 		.from(feeds)
 		.innerJoin(users, eq(feeds.user_id, users.id));
 }
+
+export async function getFeedByURL(url: string) {
+    const result = await db
+        .select()
+        .from(feeds)
+        .where(eq(feeds.url, url));
+    return result[0];
+}

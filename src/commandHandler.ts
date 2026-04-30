@@ -131,3 +131,9 @@ export async function handlerUnfollow(cmdName: string, user: User, ...args: stri
     }
     await unfollowFeed(feed.id, user.id);
 }
+
+function handleError(err: unknown) {
+  console.error(
+    `Error scraping feeds: ${err instanceof Error ? err.message : err}`,
+  );
+}

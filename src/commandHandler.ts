@@ -114,11 +114,12 @@ export async function handlerFollow(cmdName: string, ...args: string[]): Promise
 }
 
  export async function handlerFollowing(cmdName: string, ...args: string[]): Promise<void> {
-    if (!args[0] || typeof args[0] !== 'string') {
-        throw new Error("Must include the User as an argument");
+    const userName = readConfig().currentUserName!;
+    const user = await getUser(userName);
+    if (!user) {
+        throw new Error("Current user not found.");
     }
-    const userName = args[0];
-    const feedFollows = await getFeedFollowsForUser(userName);
+    const feedFollows = await getFeedFollowsForUser(user.id);
     for (const feedFollow of feedFollows) {
         console.log(`Feed Name: ${feedFollow.feeds.name}`);
         console.log('URL:', feedFollow.feeds.url);

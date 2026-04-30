@@ -58,11 +58,9 @@ export async function handlerAggregate(cmdName: string, ...args: string[]): Prom
     const durationStr = args[0];
     const timeBetweenRequests = parseDuration(durationStr);
     console.log(`Starting feed aggregation with a delay of ${timeBetweenRequests} ms between requests...`);
-    await scrapeFeeds();
+    await scrapeFeeds().catch(handleError);
     const interval = setInterval(() => {
-        void scrapeFeeds().catch((err) => {
-            console.error("Error scraping feeds:", err);
-        });
+        void scrapeFeeds().catch(handleError);
     }, timeBetweenRequests);
 
     await new Promise<void>((resolve) => {

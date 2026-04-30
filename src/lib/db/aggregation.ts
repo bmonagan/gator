@@ -1,19 +1,16 @@
 import { fetchFeed } from "src/feed";
 import { getNextFeedToFetch, markFeedFetched, } from "./queries/feeds";
 export async function scrapeFeeds() {
-    while (true) {
-        const feedToFetch = await getNextFeedToFetch();
-        if (feedToFetch) {
-            markFeedFetched(feedToFetch.id);
-            try {
-                const feedData = await fetchFeed(feedToFetch.url);
-                for (const item of feedData.channel.item) {
-                    console.log(`New item in feed ${feedToFetch.name}: ${item.title}`);
-                }
-
-            } catch (error) {
-                console.error(`Error fetching feed ${feedToFetch.url}:`, error);
+    const feedToFetch = await getNextFeedToFetch();
+    if (feedToFetch) {
+        await markFeedFetched(feedToFetch.id);
+        try {
+            const feedData = await fetchFeed(feedToFetch.url);
+            for (const item of feedData.channel.item) {
+                console.log(`New item in feed ${feedToFetch.name}: ${item.title}`);
             }
+        } catch (error) {
+            console.error(`Error fetching feed ${feedToFetch.url}:`, error);
         }
     }
 }

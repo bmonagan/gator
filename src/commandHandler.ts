@@ -5,6 +5,7 @@ import { createFeed, getFeedByURL, listAllFeeds } from "./lib/db/queries/feeds";
 import { createUser, delUsers, getUser, listUsers } from "./lib/db/queries/users";
 import { printFeed, type User } from "./printFeed";
 import { parseDuration, scrapeFeeds } from "./lib/db/aggregation";
+import { getPostsForUser } from "./lib/db/queries/posts";
 
 export type CommandHandler = (cmdName: string, ...args: string[]) => Promise<void>;
 export type UserCommandHandler = (cmdName: string, user: User, ...args: string[]) => Promise<void>;
@@ -128,6 +129,20 @@ export async function handlerUnfollow(cmdName: string, user: User, ...args: stri
         throw new Error("Feed not found.");
     }
     await unfollowFeed(feed.id, user.id);
+}
+
+export async function handlerBrosw(cmdName: string, user: User, ...args: string[]): Promise<void> {
+    const posts = await getPostsForUser(user.id, 2);
+    for (const post of posts) {
+        console.log(`Title: ${post.title}`);
+        console.log(`URL: ${post.url}`);
+        console.log(`Description: ${post.description}`);
+        console.log(`Published At: ${post.publishedAt}`);
+        console.log(`Feed Name: ${post.feedName}`);
+        console.log(`Added by: ${post.userName}`);
+        console.log('---');
+    }
+
 }
 
 function handleError(err: unknown) {

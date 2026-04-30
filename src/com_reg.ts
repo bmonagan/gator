@@ -9,8 +9,22 @@ import {
     handlerRegister,
     handlerReset,
     handlerUsers,
+    UserCommandHandler,
 } from "./commandHandler";
+import { readConfig } from "./config";
 export type CommandsRegistry = Record<string, CommandHandler>;
+type middlewareLoggedIn = (handler: UserCommandHandler) => CommandHandler;
+
+const middlewareLoggedIn: middlewareLoggedIn = (handler) => {
+    return async (cmdName, ...args) => {
+        const currentUser = readConfig().currentUserName;
+        if (!currentUser) {
+            throw new Error("You must be logged in to run this command.");
+        }
+
+        await handler(cmdName, ...args);
+    };
+};
 
 export function registerCommand(registry: CommandsRegistry, cmdName: string, handler: CommandHandler) {
 	registry[cmdName] = handler;
@@ -24,10 +38,10 @@ export function buildCommandsRegistry(): CommandsRegistry {
     registerCommand(registry, "reset", handlerReset);
     registerCommand(registry, "users", handlerUsers);
     registerCommand(registry, "agg", handlerAggregate);
-    registerCommand(registry, "addfeed", handlerAddFeed);
+    registerCommand(registry, "addfeed", middlewareLoggedIn(handlerAddFeed));
     registerCommand(registry, "feeds", handlerFeeds);
-    registerCommand(registry, "follow", handlerFollow);
-    registerCommand(registry, "following", handlerFollowing);
+    registerCommand(registry, "follow", middlewareLoggedIn(handlerFollow));
+    registerCommand(registry, "following", middlewareLoggedIn(handlerFollowing));
 
     return registry;
 }

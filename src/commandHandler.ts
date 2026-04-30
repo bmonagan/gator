@@ -131,7 +131,7 @@ export async function handlerUnfollow(cmdName: string, user: User, ...args: stri
     await unfollowFeed(feed.id, user.id);
 }
 
-export async function handlerBrosw(cmdName: string, user: User, ...args: string[]): Promise<void> {
+export async function handlerBrowse(cmdName: string, user: User, ...args: string[]): Promise<void> {
     const posts = await getPostsForUser(user.id, 2);
     for (const post of posts) {
         console.log(`Title: ${post.title}`);

@@ -59,15 +59,19 @@ export async function handlerAggregate(cmdName: string, ...args: string[]): Prom
     const timeBetweenRequests = parseDuration(durationStr);
     console.log(`Starting feed aggregation with a delay of ${timeBetweenRequests} ms between requests...`);
     await scrapeFeeds();
-    setInterval(() => {
+    const interval = setInterval(() => {
         void scrapeFeeds().catch((err) => {
             console.error("Error scraping feeds:", err);
         });
     }, timeBetweenRequests);
 
-    await new Promise(() => {
-        // Keep process alive while interval runs.
-    });
+    await new Promise<void>((resolve) => {
+                process.on("SIGINT", () => {
+                        console.log("Shutting down feed aggregator...");
+                        clearInterval(interval);
+                        resolve();
+                });
+        });
 }
 
 export async function handlerAddFeed(cmdName: string, user: User, ...args: string[]): Promise<void> {

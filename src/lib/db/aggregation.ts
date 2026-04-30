@@ -7,7 +7,7 @@ await async function scrapeFeeds() {
             markFeedFetched(feedToFetch.id);
             try {
                 const feedData = await fetchFeed(feedToFetch.url);
-                for (const item of feedData.items) {
+                for (const item of feedData.channel.item) {
                     console.log(`New item in feed ${feedToFetch.name}: ${item.title}`);
                 }
 

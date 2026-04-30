@@ -4,7 +4,7 @@ import { createFeed, getFeedByURL } from "./lib/db/queries/feeds";
 import {fetchFeed} from "./feed";
 import { printFeed } from "./printFeed";
 import { listAllFeeds } from "./lib/db/queries/feeds";
-import { createFeedFollow } from "./lib/db/queries/feed_follow";
+import { createFeedFollow, getFeedFollowsForUser } from "./lib/db/queries/feed_follow";
 import { create } from "node:domain";
 
 
@@ -107,3 +107,17 @@ export async function handlerFollow(cmdName: string, ...args: string[]): Promise
     }
     await createFeedFollow(feed.id, currentUserName);
 }
+
+ export async function handlerFollowing(cmdName: string, ...args: string[]): Promise<void> {
+    if (!args[0] || typeof args[0] !== 'string') {
+        throw new Error("Must include the User as an argument");
+    }
+    const userName = args[0];
+    const feedFollows = await getFeedFollowsForUser(userName);
+    for (const feedFollow of feedFollows) {
+        console.log(`Feed Name: ${feedFollow.feeds.name}`);
+        console.log('URL:', feedFollow.feeds.url);
+        console.log('Added by:', feedFollow.users.name);
+        console.log('---');
+    }
+ }

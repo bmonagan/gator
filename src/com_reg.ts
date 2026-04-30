@@ -10,6 +10,7 @@ import {
     handlerReset,
     handlerUsers,
     UserCommandHandler,
+    handlerUnfollow
 } from "./commandHandler";
 import { readConfig } from "./config";
 import { getUser } from "./lib/db/queries/users";
@@ -47,6 +48,7 @@ export function buildCommandsRegistry(): CommandsRegistry {
     registerCommand(registry, "feeds", handlerFeeds);
     registerCommand(registry, "follow", middlewareLoggedIn(handlerFollow));
     registerCommand(registry, "following", middlewareLoggedIn(handlerFollowing));
+    registerCommand(registry, "unfollow", middlewareLoggedIn(handlerUnfollow));
 
     return registry;
 }

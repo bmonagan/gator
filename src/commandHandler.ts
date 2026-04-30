@@ -1,12 +1,9 @@
-import { setUser,readConfig } from "./config";
-import { createUser,getUser,delUsers,listUsers } from "./lib/db/queries/users";
-import { createFeed, getFeedByURL } from "./lib/db/queries/feeds";
-import {fetchFeed} from "./feed";
-import { printFeed } from "./printFeed";
-import { listAllFeeds } from "./lib/db/queries/feeds";
+import { fetchFeed } from "./feed";
+import { readConfig, setUser } from "./config";
 import { createFeedFollow, getFeedFollowsForUser } from "./lib/db/queries/feed_follow";
-import { create } from "node:domain";
-
+import { createFeed, getFeedByURL, listAllFeeds } from "./lib/db/queries/feeds";
+import { createUser, delUsers, getUser, listUsers } from "./lib/db/queries/users";
+import { printFeed } from "./printFeed";
 
 export type CommandHandler = (cmdName: string, ...args: string[]) => Promise<void>;
 

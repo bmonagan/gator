@@ -31,4 +31,4 @@ export const feed_folows = pgTable("feed_follows", {
     .$onUpdate(() => new Date()),
   feed_id: uuid("feed_id").notNull().references(() => feeds.id, { onDelete: "cascade" }),
   user_id: uuid("user_id").notNull().references(() => users.id, { onDelete: "cascade" }),
-}, (t) => [unique().on(t.user_id, t.feed_id)]);
+}, (t) => [{user_feed: unique().on(t.user_id, t.feed_id)}]);

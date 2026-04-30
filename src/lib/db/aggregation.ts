@@ -1,5 +1,7 @@
 import { fetchFeed } from "src/feed";
 import { getNextFeedToFetch, markFeedFetched, } from "./queries/feeds";
+import { createPost } from "./queries/posts";
+
 export async function scrapeFeeds() {
     const feedToFetch = await getNextFeedToFetch();
     if (feedToFetch) {
@@ -7,7 +9,13 @@ export async function scrapeFeeds() {
         try {
             const feedData = await fetchFeed(feedToFetch.url);
             for (const item of feedData.channel.item) {
-                console.log(`New item in feed ${feedToFetch.name}: ${item.title}`);
+                createPost(
+                    item.title,
+                    item.link,
+                    item.description,
+                    new Date(item.pubDate),
+                    feedToFetch.id
+                );
             }
         } catch (error) {
             console.error(`Error fetching feed ${feedToFetch.url}:`, error);

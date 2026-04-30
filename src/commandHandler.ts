@@ -106,3 +106,15 @@ export async function handlerFollowing(cmdName: string, user: User, ...args: str
         console.log('---');
     }
     }
+
+export async function handlerUnfollow(cmdName: string, user: User, ...args: string[]): Promise<void> {
+    if (!args[0] || typeof args[0] !== 'string') {
+        throw new Error("Must include the URL of the feed as an argument");
+    }
+    const feedURL = args[0];
+    const feed = await getFeedByURL(feedURL);
+    if (!feed) {
+        throw new Error("Feed not found.");
+    }
+    await unfollowFeed(feed.id, user.id);
+}

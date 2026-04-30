@@ -1,9 +1,11 @@
 import { setUser,readConfig } from "./config";
 import { createUser,getUser,delUsers,listUsers } from "./lib/db/queries/users";
-import { createFeed } from "./lib/db/queries/feeds";
+import { createFeed, getFeedByURL } from "./lib/db/queries/feeds";
 import {fetchFeed} from "./feed";
 import { printFeed } from "./printFeed";
 import { listAllFeeds } from "./lib/db/queries/feeds";
+import { createFeedFollow } from "./lib/db/queries/feed_follow";
+import { create } from "node:domain";
 
 
 export type CommandHandler = (cmdName: string, ...args: string[]) => Promise<void>;
@@ -91,4 +93,17 @@ export async function handlerFeeds(cmdName: string, ...args: string[]): Promise<
         console.log('Added by:', feed.userName);
         console.log('---');
     }
+}
+
+export async function handlerFollow(cmdName: string, ...args: string[]): Promise<void> {
+    if (!args[0] || typeof args[0] !== 'string') {
+        throw new Error("Must include the URL of the feed as an argument");
+    }
+    const feedURL = args[0];
+    const currentUserName = readConfig().currentUserName!;
+    const feed = await getFeedByURL(feedURL);
+    if (!feed) {
+        throw new Error("Feed not found.");
+    }
+    await createFeedFollow(feed.id, currentUserName);
 }

@@ -4,6 +4,7 @@ import { createFeedFollow, getFeedFollowsForUser, unfollowFeed } from "./lib/db/
 import { createFeed, getFeedByURL, listAllFeeds } from "./lib/db/queries/feeds";
 import { createUser, delUsers, getUser, listUsers } from "./lib/db/queries/users";
 import { printFeed, type User } from "./printFeed";
+import { parseDuration, scrapeFeeds } from "./lib/db/aggregation";
 
 export type CommandHandler = (cmdName: string, ...args: string[]) => Promise<void>;
 export type UserCommandHandler = (cmdName: string, user: User, ...args: string[]) => Promise<void>;
@@ -51,14 +52,22 @@ export async function handlerUsers(cmdName: string, ...args: string[]): Promise<
 }
 
 export async function handlerAggregate(cmdName: string, ...args: string[]): Promise<void> {
-    // PLACEHOLDER 
-    // if (!args[0] || typeof(args[0]) !== 'string' ) {
-    //     throw new Error("Must include a url as an argument");
-    // }
-    // const feedURL = args[0];
-    const feedURL = "https://www.wagslane.dev/index.xml";
-    const RSSFeed = await fetchFeed(feedURL);
-    console.log(JSON.stringify(RSSFeed, null, 2));
+    if (!args[0] || typeof args[0] !== 'string') {
+        throw new Error("Must include the time between requests as an argument");
+    }
+    const durationStr = args[0];
+    const timeBetweenRequests = parseDuration(durationStr);
+    console.log(`Starting feed aggregation with a delay of ${timeBetweenRequests} ms between requests...`);
+    await scrapeFeeds();
+    setInterval(() => {
+        void scrapeFeeds().catch((err) => {
+            console.error("Error scraping feeds:", err);
+        });
+    }, timeBetweenRequests);
+
+    await new Promise(() => {
+        // Keep process alive while interval runs.
+    });
 }
 
 export async function handlerAddFeed(cmdName: string, user: User, ...args: string[]): Promise<void> {

@@ -132,7 +132,11 @@ export async function handlerUnfollow(cmdName: string, user: User, ...args: stri
 }
 
 export async function handlerBrowse(cmdName: string, user: User, ...args: string[]): Promise<void> {
-    const posts = await getPostsForUser(user.id, 2);
+    let limit = 2;
+    if (args.length > 0 && typeof args[0] === 'number') {
+        limit = args[0];
+    }
+    const posts = await getPostsForUser(user.id, limit);
     for (const post of posts) {
         console.log(`Title: ${post.title}`);
         console.log(`URL: ${post.url}`);

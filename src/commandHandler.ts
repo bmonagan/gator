@@ -97,7 +97,7 @@ export async function handlerFollow(cmdName: string, user: User, ...args: string
     await createFeedFollow(feed.id, user.id);
 }
 
- export async function handlerFollowing(cmdName: string, user: User, ...args: string[]): Promise<void> {
+export async function handlerFollowing(cmdName: string, user: User, ...args: string[]): Promise<void> {
     const feedFollows = await getFeedFollowsForUser(user.id);
     for (const feedFollow of feedFollows) {
         console.log(`Feed Name: ${feedFollow.feeds.name}`);
@@ -105,4 +105,4 @@ export async function handlerFollow(cmdName: string, user: User, ...args: string
         console.log('Added by:', feedFollow.users.name);
         console.log('---');
     }
- }
+    }

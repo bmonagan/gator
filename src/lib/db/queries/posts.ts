@@ -10,7 +10,7 @@ export async function createPost(title: string, url: string, description: string
     return result;
 }
 
-export async function getPostsForUser(userId: string, limit: number = 20) {
+export async function getPostsForUser(userId: string, limit: number = 2) {
     const result = await db
         .select({
             title: posts.title,

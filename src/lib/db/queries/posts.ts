@@ -1,5 +1,5 @@
 import { db } from "..";
-import { eq } from "drizzle-orm";
+import { eq, desc } from "drizzle-orm";
 import { posts, feeds, users } from "../schema";
 
 export async function createPost(title: string, url: string, description: string, publishedAt: Date, feedId: string) {
@@ -24,7 +24,7 @@ export async function getPostsForUser(userId: string, limit: number = 20) {
         .innerJoin(feeds, eq(posts.feed_id, feeds.id))
         .innerJoin(users, eq(feeds.user_id, users.id))
         .where(eq(users.id, userId))
-        .orderBy(posts.publishedAt.desc())
+        .orderBy(desc(posts.publishedAt))
         .limit(limit);
     return result;
 }

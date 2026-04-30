@@ -1,6 +1,6 @@
 import { fetchFeed } from "./feed";
 import { readConfig, setUser } from "./config";
-import { createFeedFollow, getFeedFollowsForUser } from "./lib/db/queries/feed_follow";
+import { createFeedFollow, getFeedFollowsForUser, unfollowFeed } from "./lib/db/queries/feed_follow";
 import { createFeed, getFeedByURL, listAllFeeds } from "./lib/db/queries/feeds";
 import { createUser, delUsers, getUser, listUsers } from "./lib/db/queries/users";
 import { printFeed, type User } from "./printFeed";

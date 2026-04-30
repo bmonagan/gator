@@ -1,30 +1,6 @@
-import { CommandsRegistry, runCommand } from "./com_reg";
-import { setUser,readConfig } from "./config";
-import { registerCommand } from "./com_reg";
-import { CommandHandler, handlerLogin, handlerRegister, handlerReset, handlerUsers, handlerAggregate, handlerAddFeed,handlerFeeds, handlerFollow, handlerFollowing } from "./commandHandler";
+import { buildCommandsRegistry, runCommand } from "./com_reg";
 async function main() {
-  // Create registry and command handlers for commands
-  const registry: CommandsRegistry = {};
-  const login: CommandHandler = handlerLogin;
-  const register: CommandHandler = handlerRegister;
-  const reset: CommandHandler = handlerReset;
-  const users: CommandHandler = handlerUsers;
-  const agg: CommandHandler = handlerAggregate;
-  const addFeed: CommandHandler = handlerAddFeed;
-  const feeds: CommandHandler = handlerFeeds;
-  const follow: CommandHandler = handlerFollow;
-  const following: CommandHandler = handlerFollowing;
-
-  // Register Commands 
-  registerCommand(registry, "login", login);
-  registerCommand(registry, "register",register);
-  registerCommand(registry, "reset", reset);
-  registerCommand(registry, "users", users);
-  registerCommand(registry,"agg",agg);
-  registerCommand(registry,"addfeed",addFeed);
-  registerCommand(registry,"feeds",feeds);
-  registerCommand(registry,"follow",follow);
-  registerCommand(registry,"following",following);
+  const registry = buildCommandsRegistry();
 
   let Fullargs:string[] = process.argv;
   let cmdName = Fullargs[2];

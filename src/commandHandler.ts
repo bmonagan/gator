@@ -10,14 +10,14 @@ export type UserCommandHandler = (cmdName: string, ...args: string[]) => Promise
 
 export async function handlerLogin(cmdName: string, ...args: string[]): Promise<void> {
     if (args.length === 0){
-        throw new Error("the login handler expects a single argument, the username");
+        throw new Error("the login handler expects a single argument, the username")};
     let username = args[0];
     if ((await getUser(username)) === undefined) {
         throw new Error("Username does not exist in database.");
     }
     setUser(username);
     console.log("User name has been set.");
-}}
+}
 
 export async function handlerRegister(cmdName: string, ...args: string[]): Promise<void> {
     if (args.length === 0){

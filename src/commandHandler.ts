@@ -6,18 +6,18 @@ import { createUser, delUsers, getUser, listUsers } from "./lib/db/queries/users
 import { printFeed } from "./printFeed";
 
 export type CommandHandler = (cmdName: string, ...args: string[]) => Promise<void>;
+export type UserCommandHandler = (cmdName: string, ...args: string[]) => Promise<void>;
 
 export async function handlerLogin(cmdName: string, ...args: string[]): Promise<void> {
     if (args.length === 0){
         throw new Error("the login handler expects a single argument, the username");
-    }
     let username = args[0];
     if ((await getUser(username)) === undefined) {
         throw new Error("Username does not exist in database.");
     }
     setUser(username);
     console.log("User name has been set.");
-}
+}}
 
 export async function handlerRegister(cmdName: string, ...args: string[]): Promise<void> {
     if (args.length === 0){

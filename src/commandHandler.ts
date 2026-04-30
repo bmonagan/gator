@@ -106,7 +106,11 @@ export async function handlerFollow(cmdName: string, ...args: string[]): Promise
     if (!feed) {
         throw new Error("Feed not found.");
     }
-    await createFeedFollow(feed.id, currentUserName);
+    const currentUserID = (await getUser(currentUserName))?.id;
+    if (!currentUserID) {
+        throw new Error("Current user not found.");
+    }
+    await createFeedFollow(feed.id, currentUserID);
 }
 
  export async function handlerFollowing(cmdName: string, ...args: string[]): Promise<void> {

@@ -82,6 +82,7 @@ export async function handlerAddFeed(cmdName: string, ...args: string[]): Promis
         throw new Error("No logged-in user found.");
     }
     const feed = await createFeed(name, url, user.id);
+    await createFeedFollow(feed.id, user.id);
     printFeed(feed,user);
 }
 

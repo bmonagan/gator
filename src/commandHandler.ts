@@ -3,10 +3,10 @@ import { readConfig, setUser } from "./config";
 import { createFeedFollow, getFeedFollowsForUser } from "./lib/db/queries/feed_follow";
 import { createFeed, getFeedByURL, listAllFeeds } from "./lib/db/queries/feeds";
 import { createUser, delUsers, getUser, listUsers } from "./lib/db/queries/users";
-import { printFeed } from "./printFeed";
+import { printFeed, type User } from "./printFeed";
 
 export type CommandHandler = (cmdName: string, ...args: string[]) => Promise<void>;
-export type UserCommandHandler = (cmdName: string, ...args: string[]) => Promise<void>;
+export type UserCommandHandler = (cmdName: string, user: User, ...args: string[]) => Promise<void>;
 
 export async function handlerLogin(cmdName: string, ...args: string[]): Promise<void> {
     if (args.length === 0){
@@ -61,7 +61,7 @@ export async function handlerAggregate(cmdName: string, ...args: string[]): Prom
     console.log(JSON.stringify(RSSFeed, null, 2));
 }
 
-export async function handlerAddFeed(cmdName: string, ...args: string[]): Promise<void> {
+export async function handlerAddFeed(cmdName: string, user: User, ...args: string[]): Promise<void> {
     if (!args[0] || typeof args[0] !== 'string') {
         throw new Error("Must include the name of the feed as an argument");
     }
@@ -70,14 +70,6 @@ export async function handlerAddFeed(cmdName: string, ...args: string[]): Promis
     }
     const name = args[0];
     const url = args[1];
-    const current_user = readConfig().currentUserName;
-    if (!current_user) {
-        throw new Error("No user logged in.");
-    }
-    const user = await getUser(current_user);
-    if (!user) {
-        throw new Error("No logged-in user found.");
-    }
     const feed = await createFeed(name, url, user.id);
     await createFeedFollow(feed.id, user.id);
     printFeed(feed,user);
@@ -93,29 +85,19 @@ export async function handlerFeeds(cmdName: string, ...args: string[]): Promise<
     }
 }
 
-export async function handlerFollow(cmdName: string, ...args: string[]): Promise<void> {
+export async function handlerFollow(cmdName: string, user: User, ...args: string[]): Promise<void> {
     if (!args[0] || typeof args[0] !== 'string') {
         throw new Error("Must include the URL of the feed as an argument");
     }
     const feedURL = args[0];
-    const currentUserName = readConfig().currentUserName!;
     const feed = await getFeedByURL(feedURL);
     if (!feed) {
         throw new Error("Feed not found.");
     }
-    const currentUserID = (await getUser(currentUserName))?.id;
-    if (!currentUserID) {
-        throw new Error("Current user not found.");
-    }
-    await createFeedFollow(feed.id, currentUserID);
+    await createFeedFollow(feed.id, user.id);
 }
 
- export async function handlerFollowing(cmdName: string, ...args: string[]): Promise<void> {
-    const userName = readConfig().currentUserName!;
-    const user = await getUser(userName);
-    if (!user) {
-        throw new Error("Current user not found.");
-    }
+ export async function handlerFollowing(cmdName: string, user: User, ...args: string[]): Promise<void> {
     const feedFollows = await getFeedFollowsForUser(user.id);
     for (const feedFollow of feedFollows) {
         console.log(`Feed Name: ${feedFollow.feeds.name}`);

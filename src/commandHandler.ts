@@ -3,6 +3,7 @@ import { createUser,getUser,delUsers,listUsers } from "./lib/db/queries/users";
 import { createFeed } from "./lib/db/queries/feeds";
 import {fetchFeed} from "./feed";
 import { printFeed } from "./printFeed";
+import { listAllFeeds } from "./lib/db/queries/feeds";
 
 
 export type CommandHandler = (cmdName: string, ...args: string[]) => Promise<void>;
@@ -80,4 +81,14 @@ export async function handlerAddFeed(cmdName: string, ...args: string[]): Promis
     }
     const feed = await createFeed(name, url, user.id);
     printFeed(feed,user);
+}
+
+export async function handlerFeeds(cmdName: string, ...args: string[]): Promise<void> { 
+    const feed_list = await listAllFeeds();
+    for (const feed of feed_list) {
+        console.log(`Feed Name: ${feed.feedName}`);
+        console.log('URL:', feed.url);
+        console.log('Added by:', feed.userName);
+        console.log('---');
+    }
 }

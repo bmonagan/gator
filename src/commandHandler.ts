@@ -141,9 +141,12 @@ export async function handlerBrowse(cmdName: string, user: User, ...args: string
     }
     const posts = await getPostsForUser(user.id, limit);
     for (const post of posts) {
+        const description = post.description && post.description.length > 100
+            ? post.description.slice(0, 100) + '...'
+            : post.description;
         console.log(`Title: ${post.title}`);
         console.log(`URL: ${post.url}`);
-        console.log(`Description: ${post.description}`);
+        console.log(`Description: ${description}`);
         console.log(`Published At: ${post.publishedAt}`);
         console.log(`Feed Name: ${post.feedName}`);
         console.log(`Added by: ${post.userName}`);
